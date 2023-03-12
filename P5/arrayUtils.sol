@@ -1,5 +1,5 @@
-pragma solidity ^0.4.23;
-
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity > 0.8.0;
 
 /**
 contains: this function has two parameters, an array of type string[] and a variable
@@ -8,7 +8,7 @@ array or not.
  */
 library arrayUtils {
 
-	function contains(string[] array, string val) internal pure returns (bool) 
+	function contains(string[] storage array, string memory val) internal pure returns (bool) 
 	{
 		for (uint256 i = 0; i < array.length; i++) {
 			if(array[i] == val)
@@ -19,23 +19,19 @@ library arrayUtils {
 		return false;
 	}
 
-	// Computes how many tokens are associated with a single account 
-	function addressBalance(address[] array, address owner) internal pure returns (uint)
-	{
-		uint ret = 0;
-		for (uint256 index = 0; index < array.length; index++) {
-			if(array[i] == owner)
-			{
-				ret++;
-			}
+	// Removes an element index of the list array
+	function removeElement(uint index, uint[] storage array) internal {
+		require(index < array.length, "Index out of range");
+		for (uint i = index; i < array.length-1; i++){
+			array[i] = array[i+1];
 		}
-		return ret;
+		array.pop();
 	}
 
 	//increment: this function has two parameters, an array of type uint[] and a percentage
 	// of type uint8. It must modify the contents of the array, incrementing each array element
 	// by the percentage passed as second parameter.
-	function increment(uint[] array, uint8 percentaje) internal pure
+	function increment(uint[] storage array, uint8 percentaje) internal pure
 	{
 		for (uint256 i = 0; i < array.length; i++) {
 			array[i] *= (percentaje/100);
@@ -43,7 +39,7 @@ library arrayUtils {
 	}
 
 	//sum: This function has one parameter of type uint[] and returns the sum of its elements.
-	function sum(uint[] array) internal pure returns (uint256)
+	function sum(uint[] storage array) internal pure returns (uint256)
 	{
 		uint256 ret;
 		for (uint256 i = 0; i < array.length; i++) {

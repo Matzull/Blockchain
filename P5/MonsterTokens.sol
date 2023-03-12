@@ -19,6 +19,7 @@ contract MonsterTokens is ERC721{
     uint _n_characters; // number of characters
     address _Owner;
     Character[] _characters;
+    mapping(address => uint[]) _balances;
 
     modifier onlyContractOwner() {
         require(msg.sender == _Owner, "Only the contract owner can do this action.");
@@ -37,7 +38,8 @@ contract MonsterTokens is ERC721{
 
     function createMonsterToken(string charName, address owner) external onlyContractOwner returns (uint)
     {
-        _characters.push(new Character(charName, new uint[](0), ++_n_characters, owner));
+        _characters.push(new Character(charName, new uint[](0), ++_n_characters, owner, address(0)));
+        _balances[owner].push(_n_characters);
         return _n_characters;
     }
 
@@ -76,15 +78,25 @@ contract MonsterTokens is ERC721{
         require(totalFirePower >= msg.value, "Value should be greater than " + totalFirePower + " Wei");
         require(_from == _characters[_tokenId]._Owner, "Can only transfer from the owner of the token.");
         _characters[_tokenId]._Owner = _to;
+        arrayUtils.removeElement(_tokenId, _balances[owner]);
+        _balances[_to].push(_tokenId);
         emit Transfer(_from, _to, _tokenId);
     }
 
     // VIEW FUNCTIONS (GETTERS)
     function balanceOf(address _owner) external view returns (uint256)
     {
-        arrayUtils.addressBalance(_characters[owner], owner);
+        return _balances[_owner].length();
     }
 
-    function ownerOf(uint256 _tokenId) external view returns (address);
-    function getApproved(uint256 _tokenId) external view returns (address);
+    function ownerOf(uint256 _tokenId) external view returns (address)
+    {
+        require(_tokenId > 1000 && _tokenId <= _n_characters, "Invalid token Id");
+        return _characters[_tokenId].tokenOwner;
+    }
+    function getApproved(uint256 _tokenId) external view returns (address)
+    {
+        require(_tokenId > 1000 && _tokenId <= _n_characters, "Invalid token Id");
+        return _characters[_tokenId].approved;
+    }
 }
