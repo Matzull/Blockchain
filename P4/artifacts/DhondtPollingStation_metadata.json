@@ -1,0 +1,149 @@
+{
+	"compiler": {
+		"version": "0.8.6+commit.11564f7e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "presidentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numberOfParties",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "regionId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "Print",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "partyId",
+						"type": "uint256"
+					}
+				],
+				"name": "castVote",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "closeVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getResults",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "openVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "votingFinished",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"DhondtPollingStation.sol": "DhondtPollingStation"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"DhondtElectionRegion.sol": {
+			"keccak256": "0x073419c9eb715975ce443a295b1623fe99cfca90b7b52eee26dd4a3b49847d57",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://25a681304f7959424bb353086762aaf64b7910310ef6db9a57f398ea253e6cfa",
+				"dweb:/ipfs/Qmd3WmXKuTNe4yEqDhVtJVsFRQDzjM5cLgad52X5YQmKAr"
+			]
+		},
+		"DhondtPollingStation.sol": {
+			"keccak256": "0xb2e5b0ec3ea9968892cb82dbec1a30af10f31db846018a58128e1fae4a3af646",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://c59d6c7e72f72a1562ff2013cef7710514b454e468ea646035cd7bb3557ceb7b",
+				"dweb:/ipfs/Qmf8Vg3SSfED4iPmjG3EEQu916dDhDb2qCHQreqKgZ9EoJ"
+			]
+		},
+		"PollingStation.sol": {
+			"keccak256": "0xefa344b3de3998e266b34ecb00d0cfa28d2d860e135d9ae90d4c3abb5a02968c",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://0a26b1429bac698d9f7fc5f989693047e602d48600db9d431ae91dbc33865d75",
+				"dweb:/ipfs/Qma5XyiG4Xk8usg6URrSJ62MZxUesoe8SY8S3NP9cvPN3F"
+			]
+		}
+	},
+	"version": 1
+}
