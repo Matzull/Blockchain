@@ -1,6 +1,5 @@
-//Downloaded from: https://github.com/ConsenSysMesh/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
-// SPDX-License-Identifier: 
-pragma solidity ^0.4.23;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity > 0.8.0;
 
 
 /**
