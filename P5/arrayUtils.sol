@@ -8,10 +8,10 @@ array or not.
  */
 library arrayUtils {
 
-	function contains(string[] storage array, string memory val) internal pure returns (bool) 
+	function contains(string[] storage array, string memory val) internal view returns (bool) 
 	{
 		for (uint256 i = 0; i < array.length; i++) {
-			if(array[i] == val)
+			if(keccak256(bytes(array[i])) == keccak256(bytes(val)))
 			{
 				return true;
 			}
@@ -31,7 +31,7 @@ library arrayUtils {
 	//increment: this function has two parameters, an array of type uint[] and a percentage
 	// of type uint8. It must modify the contents of the array, incrementing each array element
 	// by the percentage passed as second parameter.
-	function increment(uint[] storage array, uint8 percentaje) internal pure
+	function increment(uint[] storage array, uint8 percentaje) internal
 	{
 		for (uint256 i = 0; i < array.length; i++) {
 			array[i] *= (percentaje/100);
@@ -39,7 +39,7 @@ library arrayUtils {
 	}
 
 	//sum: This function has one parameter of type uint[] and returns the sum of its elements.
-	function sum(uint[] storage array) internal pure returns (uint256)
+	function sum(uint[] storage array) internal view returns (uint256)
 	{
 		uint256 ret;
 		for (uint256 i = 0; i < array.length; i++) {
