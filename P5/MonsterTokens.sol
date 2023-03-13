@@ -17,7 +17,8 @@ contract MonsterTokens is ERC721simplified{
     }
     
     uint _n_characters; // number of characters
-    address _Owner;
+    address payable public _Owner;
+    
     Character[] _characters;
     mapping(address => uint[]) _balances;
 
@@ -36,35 +37,41 @@ contract MonsterTokens is ERC721simplified{
         _;
     }
 
+    constructor() payable {
+        _Owner = payable(msg.sender);
+        _n_characters = 1000;
+    }
+
     function createMonsterToken(string calldata charName, address owner) external onlyContractOwner returns (uint)
     {
-        _characters.push(new Character(charName, new uint[](0), ++_n_characters, owner, address(0)));
+        _characters.push(Character(charName, Weapons(new string[](0), new uint[](0)), ++_n_characters, owner, address(0)));
         _balances[owner].push(_n_characters);
         return _n_characters;
     }
 
-    function addWeapon(uint charTokenId, string calldata weapon, uint firePower) external onlyTokenOwner(charTokenId) onlyApproved(charTokenId)
+    function addWeapon(uint charTokenId, string memory weapon, uint firePower) external onlyTokenOwner(charTokenId) onlyApproved(charTokenId)
     {
         require(!arrayUtils.contains(_characters[charTokenId].weapons.names, weapon), "Cannot add an already existing weapon.");
         _characters[charTokenId].weapons.names.push(weapon);
-        _characters[charTokenId].weapons.firePower.push(firePower);
+        _characters[charTokenId].weapons.firePowers.push(firePower);
     }
 
     function incrementFirePower(uint charTokenId, uint8 percentaje) external
     {
-        arrayUtils.increment(_characters[charTokenId].weapons.firePower, percentaje);
+        arrayUtils.s_increment(_characters[charTokenId].weapons.firePowers, percentaje);
     }
 
     function collectProfits() onlyContractOwner external
     {
-
+        uint balance = address(this).balance;
+        _Owner.transfer(balance);
     }
 
     // APPROVAL FUNCTIONS
     function approve(address _approved, uint256 _tokenId) external payable onlyTokenOwner(_tokenId)
     {
-        uint256 totalFirePower = arrayUtils.sum(_characters[_tokenId].weapons.firePower);
-        require(totalFirePower >= msg.value, "Value should be greater than " + totalFirePower + " Wei");
+        uint256 totalFirePower = arrayUtils.s_sum(_characters[_tokenId].weapons.firePowers);
+        require(totalFirePower >= msg.value, string(abi.encodePacked("Value should be greater than ", totalFirePower, " Wei")));
         _characters[_tokenId].approved = _approved;
         emit Approval(msg.sender, _approved, _tokenId);
     }
@@ -72,10 +79,10 @@ contract MonsterTokens is ERC721simplified{
     // TRANSFER FUNCTION
     function transferFrom(address _from, address _to, uint256 _tokenId) external payable onlyTokenOwner(_tokenId) onlyApproved(_tokenId)
     {
-        uint256 totalFirePower = arrayUtils.sum(_characters[_tokenId].weapons.firePower);
-        require(totalFirePower >= msg.value, "Value should be greater than " + totalFirePower + " Wei");
-        require(_from == _characters[_tokenId]._Owner, "Can only transfer from the owner of the token.");
-        _characters[_tokenId]._Owner = _to;
+        uint256 totalFirePower = arrayUtils.s_sum(_characters[_tokenId].weapons.firePowers);
+        require(totalFirePower >= msg.value, string(abi.encodePacked("Value should be greater than ", totalFirePower, " Wei")));
+        require(_from == _characters[_tokenId].tokenOwner, "Can only transfer from the owner of the token.");
+        _characters[_tokenId].tokenOwner = _to;
         arrayUtils.removeElement(_tokenId, _balances[_from]);
         _balances[_to].push(_tokenId);
         emit Transfer(_from, _to, _tokenId);
@@ -84,7 +91,7 @@ contract MonsterTokens is ERC721simplified{
     // VIEW FUNCTIONS (GETTERS)
     function balanceOf(address _owner) external view returns (uint256)
     {
-        return _balances[_owner].length();
+        return _balances[_owner].length;
     }
 
     function ownerOf(uint256 _tokenId) external view returns (address)
@@ -92,6 +99,7 @@ contract MonsterTokens is ERC721simplified{
         require(_tokenId > 1000 && _tokenId <= _n_characters, "Invalid token Id");
         return _characters[_tokenId].tokenOwner;
     }
+
     function getApproved(uint256 _tokenId) external view returns (address)
     {
         require(_tokenId > 1000 && _tokenId <= _n_characters, "Invalid token Id");

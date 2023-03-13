@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity > 0.8.0;
-
+import "safemath.sol";
 /**
 contains: this function has two parameters, an array of type string[] and a variable
 val of type string and returns a Boolean value that indicates whether val is in the
@@ -38,12 +38,28 @@ library arrayUtils {
 		}
 	}
 
+	function s_increment(uint[] storage array, uint8 percentaje) internal
+	{
+		for (uint256 i = 0; i < array.length; i++) {
+			array[i] = SafeMath.mul(array[i], (percentaje/100));
+		}
+	}
+
 	//sum: This function has one parameter of type uint[] and returns the sum of its elements.
 	function sum(uint[] storage array) internal view returns (uint256)
 	{
 		uint256 ret;
 		for (uint256 i = 0; i < array.length; i++) {
 			ret += array[i];
+		}
+		return ret;
+	}
+
+	function s_sum(uint[] storage array) internal view returns (uint256)
+	{
+		uint256 ret;
+		for (uint256 i = 0; i < array.length; i++) {
+			ret = SafeMath.add(ret, array[i]);
 		}
 		return ret;
 	}
